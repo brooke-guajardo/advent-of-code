@@ -1,13 +1,15 @@
-def pain(arr: list):
-    forklift_count = 0
+def remove_rolls(rolls_before: list, coords_to_remove: list, forklist_count: int):
+    for coords in coords_to_remove:
+        rolls_before[coords[0]][coords[1]] = '.'
+    
+    return pain(rolls_before, forklist_count)
+    
+    
+
+def pain(arr: list, forklift_count: int):
     columns = len(arr[0])
     rows = len(arr)
-    print(f"Columns: {columns} Rows: {rows}")
-    for col in arr:
-        for row in col:
-            if row == '@':
-                pass
-
+    coords = []
     for i in range(0,columns):
         for j in range(0,rows):
             paper_count = 0
@@ -15,6 +17,7 @@ def pain(arr: list):
                 ### if row and colmun is the first and the last, i.e. 4 corners
                 if (i == 0 and j == 0) or (i == columns - 1 and j == 0) or (i == 0 and j == rows - 1) or (i == columns - 1 and j == rows - 1):
                     forklift_count+=1
+                    coords.append((i,j))
                     # print(f"Corner: {i},{j}")
                     continue
                 ### if column is first or the last
@@ -43,6 +46,7 @@ def pain(arr: list):
                             paper_count+=1
                     if paper_count < 4:
                         forklift_count+=1
+                        coords.append((i,j))
                         # print(f"Coordinates: {i},{j}")
                         continue
                 ### if row is the first or the last
@@ -70,6 +74,7 @@ def pain(arr: list):
                             paper_count+=1
                     if paper_count < 4:
                         forklift_count+=1
+                        coords.append((i,j))
                         # print(f"Coordinates: {i},{j}")
                         continue
                 else:
@@ -98,9 +103,13 @@ def pain(arr: list):
                         paper_count+=1
                     if paper_count < 4:
                         forklift_count+=1
+                        coords.append((i,j))
                         # print(f"Coordinates: {i},{j}")
                         continue
-    return forklift_count
+    if coords != []:
+        return remove_rolls(arr, coords, forklift_count)
+    else:
+        return forklift_count
 
 
 def main():
@@ -108,7 +117,7 @@ def main():
     with open("input.txt") as file:
         for line in file:
             big_boi_arr.append(list(line.rstrip()))
-    num = pain(big_boi_arr)
+    num = pain(big_boi_arr,0)
     print(num)
     return num
     
