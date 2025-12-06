@@ -1,28 +1,27 @@
 def bank(bank_batteries: str):
     all_batts = list(bank_batteries.rstrip())
-    batt_1 = 0
-    batt_2 = 0
-    index_1 = 0
-    index_2 = 0
+    
+    batt_count = len(all_batts)
+    diff = batt_count - 12
+    final_batt = [0] * 12
+    start = 0
+    position = 0
+    # print(bank_batteries)
+    # print(all_batts)
 
-    # first search, needs to get number's index
-    for i in range(len(all_batts)-1):
-        if int(all_batts[i]) > int(batt_1):
-            batt_1 = int(all_batts[i])
-            index_1 = i
-           
-    for j in range(index_1 + 1, len(all_batts)):
-        if int(all_batts[j]) > int(batt_2):
-            batt_2 = int(all_batts[j])
-    # else:
-    #     print("bork")
-    #     for j in range(0,len(all_batts) - 1):
-    #         if int(all_batts[j]) > int(batt_2):
-    #             batt_2 = int(all_batts[j])
-    #             index_2 = j
-    #     temp = (batt_1 * 10) + batt_2
+    # I can only search for the first number 1 + diff positions before locking in
+    while position < 12:
+        temp = start
+        for index in range(start, batt_count - (len(final_batt) - (position + 1))):
+            #print(f"Compare {final_batt[position]} vs {all_batts[index]} for position: {position}, index at {index}, start at {start}")
+            if final_batt[position] < int(all_batts[index]):
+                final_batt[position] = int(all_batts[index])
+                temp = index
+        position+=1
+        # print(f"Position: {position}")
+        start = temp + 1
 
-    return (batt_1 * 10) + batt_2
+    return int(''.join([str(num) for num in final_batt]))
 
 def main():
     joltage = 0
